@@ -15,8 +15,8 @@ import tkinter
 N_ROWS = 6			# Number of rows
 N_COLS = 5			# Number of columns
 
-CORRECT_COLOR = "#66BB66"       # Light green for correct letters
-PRESENT_COLOR = "#CCBB66"       # Brownish yellow for misplaced letters
+CORRECT_COLOR = "#82b4c1"       # Light green for correct letters
+PRESENT_COLOR = "#ffbf00"       # Brownish yellow for misplaced letters
 MISSING_COLOR = "#999999"       # Gray for letters that don't appear
 UNKNOWN_COLOR = "#FFFFFF"       # Undetermined letters are white
 KEY_COLOR = "#DDDDDD"           # Keys are colored light gray
@@ -154,7 +154,7 @@ class WordleGWindow:
         root.protocol("WM_DELETE_WINDOW", delete_window)
         self._root = root
         canvas = tkinter.Canvas(root,
-                                bg="black",
+                                bg="white",
                                 width=CANVAS_WIDTH,
                                 height=CANVAS_HEIGHT,
                                 highlightthickness=0)
@@ -202,7 +202,7 @@ class WordleGWindow:
     def add_enter_listener(self, fn):
         self._enter_listeners.append(fn)
 
-    def show_message(self, msg, color="white"):
+    def show_message(self, msg, color="black"):
         self._message.set_text(msg, color)
 
 
@@ -235,9 +235,9 @@ class WordleSquare:
     def set_color(self, color):
         color = color.upper()
         self._color = color
-        fg = "black"
+        fg = "white"
         if color == UNKNOWN_COLOR:
-            fg = "white"
+            fg = "black"
         self._canvas.itemconfig(self._frame, fill=color)
         self._canvas.itemconfig(self._text, fill=fg)
 
@@ -288,9 +288,9 @@ class WordleKey:
 
     def set_color(self, color):
         self._color = color
-        fg = "black"
+        fg = "white"
         if color == UNKNOWN_COLOR:
-            fg = "white"
+            fg = "black"
         self._canvas.itemconfig(self._frame, fill=color)
         self._canvas.itemconfig(self._text, fill=fg)
 
@@ -308,6 +308,6 @@ class WordleMessage:
     def get_text(self):
         return self._text
 
-    def set_text(self, text, color="white"):
+    def set_text(self, text, color="black"):
         self._text = text
         self._canvas.itemconfigure(self._msg, text=text, fill=color)
