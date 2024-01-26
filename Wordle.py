@@ -20,6 +20,8 @@ def wordle():
     # for i in range(len(random_word)):
     #     gw.set_square_letter(0, i, random_word[i])
     
+    print(random_word)
+
     # word guess
     def enter_action(guess):
         
@@ -28,7 +30,6 @@ def wordle():
             gw.show_message("Not in word list.")
         # color correct/incorrect letters
         else:
-            print(random_word)
             for i in range(len(guess)):
                 if guess[i] == random_word[i]:
                     gw.set_square_color(0, i, CORRECT_COLOR)
