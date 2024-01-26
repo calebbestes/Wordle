@@ -13,31 +13,63 @@ def wordle():
     
     # initialize variables
     gw = WordleGWindow()
-    
 
     # create random word
     random_word = random.choice(FIVE_LETTER_WORDS).upper()
-    # for i in range(len(random_word)):
-    #     gw.set_square_letter(0, i, random_word[i])
-    
-    print(random_word)
+    # random_word = "GUESS"
+    # print(random_word)
 
     # word guess
     def enter_action(guess):
         
-        # check if word is in word list
-        if guess.lower() not in FIVE_LETTER_WORDS:
-            gw.show_message("Not in word list.")
-        # color correct/incorrect letters
-        else:
-            for i in range(len(guess)):
-                if guess[i] == random_word[i]:
-                    gw.set_square_color(0, i, CORRECT_COLOR)
-                elif guess[i] in random_word:
-                    gw.set_square_color(0, i, PRESENT_COLOR)
+        # check if word is 5 letters
+        if len(guess.replace(" ", "")) == 5:
+        
+            # check if word is in word list
+            if guess.lower() not in FIVE_LETTER_WORDS:
+                gw.show_message("Not in word list.")
+            
+            # run program
+            else:
+                
+                # create dictionary of random_word letters
+                random_word_letter_count = {}
+                for letter in random_word:
+                    count = random_word_letter_count.get(letter, 0)
+                    count += 1
+                    random_word_letter_count[letter] = count
+                
+                # color correct letters
+                for i in range(len(guess)):
+                    
+                    # first, color all letters missing
+                    gw.set_square_color(gw.get_current_row(), i, MISSING_COLOR)
+                    
+                    # then, color correct letters
+                    if guess[i] == random_word[i]:
+                        gw.set_square_color(gw.get_current_row(), i, CORRECT_COLOR)
+                        random_word_letter_count[guess[i]] -= 1
+                        
+                # color present letters
+                for i in range(len(guess)):
+                    if (guess[i] in random_word) and (guess[i] != random_word[i]):
+                        
+                        # color only as many letters are in the word
+                        if random_word_letter_count[guess[i]] > 0:
+                            gw.set_square_color(gw.get_current_row(), i, PRESENT_COLOR)
+                            random_word_letter_count[guess[i]] -= 1
+                            
+                # check if word is correct
+                if guess.upper() == random_word:
+                    gw.show_message("You win!")
+                # check if last row
+                elif gw.get_current_row() == N_ROWS - 1:
+                    gw.show_message("Sorry, try again next time.")
+                # if not, move to next row
                 else:
-                    gw.set_square_color(0, i, MISSING_COLOR)            
+                    gw.set_current_row(gw.get_current_row() + 1)
 
+    # add enter key listener
     gw.add_enter_listener(enter_action)
             
 # run program
