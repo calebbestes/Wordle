@@ -6,10 +6,23 @@ This program generates a random 5-letter word and allows the user to guess.
 
 # imports
 import random
+from tkinter import Tk, messagebox
 from WordleDictionary import FIVE_LETTER_WORDS
-from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR
+from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT_COLOR, CORRECT_COLOR_COLORBLIND, PRESENT_COLOR_COLORBLIND, MISSING_COLOR
 
+# return true or false if colorblind mode is enabled
+def colorblind_mode():
+    root = Tk()
+    root.withdraw()
+    result = messagebox.askyesno("Colorblind Mode", "Do you want to enable colorblind mode?")
+    root.destroy()
+    return result
+
+# main program
 def wordle():
+    
+    # colorblind mode prompt, will use this later to change colors
+    colorblind = colorblind_mode()
     
     # initialize variables
     gw = WordleGWindow()
@@ -47,7 +60,11 @@ def wordle():
                     
                     # then, color correct letters
                     if guess[i] == random_word[i]:
-                        gw.set_square_color(gw.get_current_row(), i, CORRECT_COLOR)
+                        # change if colorblind mode
+                        if colorblind:
+                            gw.set_square_color(gw.get_current_row(), i, CORRECT_COLOR_COLORBLIND)
+                        else:
+                            gw.set_square_color(gw.get_current_row(), i, CORRECT_COLOR)
                         random_word_letter_count[guess[i]] -= 1
                         
                 # color present letters
@@ -56,7 +73,11 @@ def wordle():
                         
                         # color only as many letters are in the word
                         if random_word_letter_count[guess[i]] > 0:
-                            gw.set_square_color(gw.get_current_row(), i, PRESENT_COLOR)
+                            # change if colorblind mode
+                            if colorblind:
+                                gw.set_square_color(gw.get_current_row(), i, PRESENT_COLOR_COLORBLIND)
+                            else:
+                                gw.set_square_color(gw.get_current_row(), i, PRESENT_COLOR)
                             random_word_letter_count[guess[i]] -= 1
                             
                 # check if word is correct
