@@ -99,8 +99,8 @@ class WordleGWindow:
             if isinstance(tke, str):
                 ch = tke.upper()
             else:
-                ch = tke.char.upper()
-            if ch == "\007" or ch == "\177" or ch == "DELETE":
+                ch = tke.keysym.upper()
+            if ch == "\007" or ch == "\177" or ch == "DELETE" or ch == "BACKSPACE":
                 self.show_message("")
                 if self._row < N_ROWS and self._col > 0:
                     self._col -= 1
@@ -154,7 +154,7 @@ class WordleGWindow:
         root.protocol("WM_DELETE_WINDOW", delete_window)
         self._root = root
         canvas = tkinter.Canvas(root,
-                                bg="white",
+                                bg="White",
                                 width=CANVAS_WIDTH,
                                 height=CANVAS_HEIGHT,
                                 highlightthickness=0)
@@ -202,7 +202,7 @@ class WordleGWindow:
     def add_enter_listener(self, fn):
         self._enter_listeners.append(fn)
 
-    def show_message(self, msg, color="black"):
+    def show_message(self, msg, color="Black"):
         self._message.set_text(msg, color)
 
 
@@ -235,9 +235,9 @@ class WordleSquare:
     def set_color(self, color):
         color = color.upper()
         self._color = color
-        fg = "white"
+        fg = "White"
         if color == UNKNOWN_COLOR:
-            fg = "black"
+            fg = "Black"
         self._canvas.itemconfig(self._frame, fill=color)
         self._canvas.itemconfig(self._text, fill=fg)
 
@@ -288,9 +288,9 @@ class WordleKey:
 
     def set_color(self, color):
         self._color = color
-        fg = "white"
+        fg = "White"
         if color == UNKNOWN_COLOR:
-            fg = "black"
+            fg = "Black"
         self._canvas.itemconfig(self._frame, fill=color)
         self._canvas.itemconfig(self._text, fill=fg)
 
@@ -308,6 +308,6 @@ class WordleMessage:
     def get_text(self):
         return self._text
 
-    def set_text(self, text, color="black"):
+    def set_text(self, text, color="Black"):
         self._text = text
         self._canvas.itemconfigure(self._msg, text=text, fill=color)
