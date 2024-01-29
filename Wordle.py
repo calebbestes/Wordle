@@ -6,7 +6,7 @@ This program generates a random 5-letter word and allows the user to guess.
 
 # imports
 import random
-from tkinter import Tk, messagebox
+from tkinter import Tk, messagebox, simpledialog
 from WordleDictionary import FIVE_LETTER_WORDS
 from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT_COLOR, CORRECT_COLOR_COLORBLIND, PRESENT_COLOR_COLORBLIND, MISSING_COLOR
 
@@ -14,9 +14,15 @@ from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT
 def colorblind_mode():
     root = Tk()
     root.withdraw()
-    result = messagebox.askyesno("Colorblind Mode", "Do you want to enable colorblind mode?")
+    result = simpledialog.askstring("Colorblind Mode", "Would you like to enable colorblind mode? (Yes/No)")
     root.destroy()
-    return result
+    if result[0].lower() == "y":
+        return True
+    elif result[0].lower() == "n":
+        return False
+    else:
+        messagebox.showerror("Error", "Invalid input.")
+        colorblind_mode()
 
 # main program
 def wordle():
