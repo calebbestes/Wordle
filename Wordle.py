@@ -64,7 +64,7 @@ def wordle():
                     gw.show_message("You win!")
                 # check if last row
                 elif gw.get_current_row() == N_ROWS - 1:
-                    gw.show_message("Sorry, try again next time.")
+                    gw.show_message(f"Sorry, the word was {random_word}.")
                 # if not, move to next row
                 else:
                     gw.set_current_row(gw.get_current_row() + 1)
